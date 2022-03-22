@@ -5,8 +5,57 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PptLyricMaker"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="511" Width="557">
     <Grid>
-        
+
+        <TabControl Margin="21,27,332,69">
+            <TabItem Header="수정">
+                <Grid>
+                    <ComboBox IsEditable="True" IsSynchronizedWithCurrentItem="True" RenderTransformOrigin="0.5,0.5" Margin="29,32,11,288">
+                        <TextBlock>hello</TextBlock>
+                        <TextBlock>안녕</TextBlock>
+                        <TextBlock>하세요</TextBlock>
+                    </ComboBox>
+                    <Button Margin="29,90,11,229"></Button>
+                    <TextBox Margin="29,162,11,99" >
+                        hello
+                    </TextBox>
+                </Grid>
+            </TabItem>
+
+
+            <TabItem Header="추가">
+                <Grid>
+                    <TextBox Margin="29,27,11,294">
+                        제목
+                    </TextBox>
+                    <Button Margin="29,90,11,229"></Button>
+                    <TextBox Margin="29,162,11,99" Text="hello" />
+                </Grid>
+            </TabItem>
+
+            <TabItem Header="삭제">
+                <Grid>
+                    <ComboBox IsEditable="True" IsSynchronizedWithCurrentItem="True" RenderTransformOrigin="0.5,0.5" Margin="29,32,11,288">
+                        <TextBlock>hello</TextBlock>
+                        <TextBlock>안녕</TextBlock>
+                        <TextBlock>하세요</TextBlock>
+                    </ComboBox>
+                    <Button Margin="29,102,11,215">
+
+                    </Button>
+                </Grid>
+            </TabItem>
+        </TabControl>
+
+
+        <Border Margin="239,27,30,69" BorderBrush="Black" BorderThickness="1">
+            <Grid>
+                <Border Margin="0,289,0,0" BorderBrush="black" BorderThickness="0,1,0,0">
+                    <ScrollViewer  HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Disabled" />    
+                </Border>
+                
+            </Grid>
+        </Border>
     </Grid>
 </Window>
