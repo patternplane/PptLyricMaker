@@ -1,0 +1,103 @@
+﻿<Window x:Class="PptLyricMaker.OriginWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PptLyricMaker"
+        mc:Ignorable="d"
+        Title="OriginWindow" Height="521" Width="556">
+    <Grid >
+        <Grid.RowDefinitions>
+            <RowDefinition Height="18*"/>
+            <RowDefinition Height="187*"/>
+            <RowDefinition Height="35*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="28*"/>
+            <ColumnDefinition Width="192*"/>
+            <ColumnDefinition Width="21*"/>
+            <ColumnDefinition Width="282*"/>
+            <ColumnDefinition Width="26*"/>
+        </Grid.ColumnDefinitions>
+
+        <!--가사 데이터베이스 조작-->
+        <TabControl Grid.Row="1" Grid.Column="1">
+            <!--가사 수정 탭-->
+            <TabItem Header="수정">
+                <Grid>
+                    <ComboBox IsEditable="True" IsSynchronizedWithCurrentItem="True" RenderTransformOrigin="0.5,0.5" Margin="29,32,11,288">
+                        <TextBlock>hello</TextBlock>
+                        <TextBlock>안녕</TextBlock>
+                        <TextBlock>하세요</TextBlock>
+                    </ComboBox>
+                    <Button Margin="29,90,11,229"></Button>
+                    <TextBox Margin="29,162,11,99" >
+                        hello
+                    </TextBox>
+                </Grid>
+            </TabItem>
+
+            <!--가사 추가 탭-->
+            <TabItem Header="추가">
+                <Grid>
+                    <TextBox Margin="29,27,11,294">
+                        제목
+                    </TextBox>
+                    <Button Margin="29,90,11,229"></Button>
+                    <TextBox Margin="29,162,11,99" Text="hello" />
+                </Grid>
+            </TabItem>
+
+            <!--가사 삭제 탭-->
+            <TabItem Header="삭제">
+                <Grid>
+                    <ComboBox IsEditable="True" IsSynchronizedWithCurrentItem="True" RenderTransformOrigin="0.5,0.5" Margin="29,32,11,288">
+                        <TextBlock>hello</TextBlock>
+                        <TextBlock>안녕</TextBlock>
+                        <TextBlock>하세요</TextBlock>
+                    </ComboBox>
+                    <Button Margin="29,102,11,215">
+
+                    </Button>
+                </Grid>
+            </TabItem>
+        </TabControl>
+
+        <!--ppt로 출력하기 관련 조작-->
+        <Border BorderBrush="Black" BorderThickness="1" Grid.Row="1" Grid.Column="3">
+            <Grid>
+                <!--파일로 출력하는 UI-->
+                <Border Margin="0,0,129,267" BorderBrush="Black" BorderThickness="0,0,1,1">
+                    <Grid>
+                        <TextBox Margin="10,36,24,57"/>
+
+                        <TextBox Margin="10,72,24,22" />
+                    </Grid>
+                </Border>
+
+                <!--바로 화면에 출력하는 UI-->
+                <Border Margin="149,0,0,267" BorderBrush="Black" BorderThickness="0,0,0,1">
+
+                </Border>
+
+                <!--특정 표식 처리부분-->
+                <ComboBox Margin="35,164,94,188">
+
+                </ComboBox>
+                <TextBox Margin="35,208,94,153">
+
+                </TextBox>
+                <Button Margin="35,245,94,112">
+
+                </Button>
+
+                <!--ppt 미리보기-->
+                <Border Margin="0,289,0,0" BorderBrush="black" BorderThickness="0,1,0,0">
+                    <ScrollViewer  HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Disabled" />
+                </Border>
+
+
+            </Grid>
+        </Border>
+    </Grid>
+</Window>

@@ -5,99 +5,209 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PptLyricMaker"
         mc:Ignorable="d"
-        Title="MainWindow" Height="521" Width="556">
-    <Grid >
+        Title="CCM Lyric" Height="580" Width="767">
+    <Grid Background="#FFFDFDFD">
         <Grid.RowDefinitions>
-            <RowDefinition Height="18*"/>
-            <RowDefinition Height="187*"/>
-            <RowDefinition Height="35*"/>
+            <RowDefinition Height="21*"/>
+            <RowDefinition Height="506*"/>
+            <RowDefinition Height="22*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="28*"/>
-            <ColumnDefinition Width="192*"/>
             <ColumnDefinition Width="21*"/>
-            <ColumnDefinition Width="282*"/>
-            <ColumnDefinition Width="26*"/>
+            <ColumnDefinition Width="346*"/>
+            <ColumnDefinition Width="20*"/>
+            <ColumnDefinition Width="347*"/>
+            <ColumnDefinition Width="25*"/>
         </Grid.ColumnDefinitions>
-
-        <!--가사 데이터베이스 조작-->
-        <TabControl Grid.Row="1" Grid.Column="1">
-            <!--가사 수정 탭-->
-            <TabItem Header="수정">
+        
+        <!--곡 추가 및 수정-->
+        <TabControl Grid.Row="1" Grid.Column="1" Background="#FFEBFFEF">
+            <!--곡 선택-->
+            <TabItem Header="곡 선택">
                 <Grid>
-                    <ComboBox IsEditable="True" IsSynchronizedWithCurrentItem="True" RenderTransformOrigin="0.5,0.5" Margin="29,32,11,288">
-                        <TextBlock>hello</TextBlock>
-                        <TextBlock>안녕</TextBlock>
-                        <TextBlock>하세요</TextBlock>
-                    </ComboBox>
-                    <Button Margin="29,90,11,229"></Button>
-                    <TextBox Margin="29,162,11,99" >
-                        hello
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="10*"/>
+                        <RowDefinition Height="30*"/>
+                        <RowDefinition Height="14*"/>
+                        <RowDefinition Height="41*"/>
+                        <RowDefinition Height="14*"/>
+                        <RowDefinition Height="267*"/>
+                        <RowDefinition Height="21*"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="18*"/>
+                        <ColumnDefinition Width="228*"/>
+                        <ColumnDefinition Width="17*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Grid Grid.Row="1" Grid.Column="1" x:Name="ModifyButtonGrid">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="163*"/>
+                            <ColumnDefinition >
+                                <ColumnDefinition.Style>
+                                    <Style TargetType="ColumnDefinition">
+                                        <Setter Property="Width" Value="11*"></Setter>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Path=showButton}" Value="False">
+                                                <Setter Property="Width" Value="0"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </ColumnDefinition.Style>
+                            </ColumnDefinition>
+                            <ColumnDefinition>
+                                <ColumnDefinition.Style>
+                                    <Style TargetType="ColumnDefinition">
+                                        <Setter Property="Width" Value="54*"></Setter>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding showButton}" Value="False">
+                                                <Setter Property="Width" Value="0"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </ColumnDefinition.Style>
+                            </ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <ComboBox Grid.Column="0"></ComboBox>
+                        <Button Grid.Column="2">
+                            가사 수정
+                        </Button>
+                    </Grid>
+
+                    <TextBox Grid.Row="3" Grid.Column="1" >
+                        가사 또는 제목으로 검색
+                    </TextBox>
+
+                    <TextBox Grid.Row="5" Grid.Column="1" AcceptsReturn="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="auto">
+
                     </TextBox>
                 </Grid>
             </TabItem>
 
-            <!--가사 추가 탭-->
-            <TabItem Header="추가">
+            <!--곡 추가-->
+            <TabItem Header="곡 추가" >
                 <Grid>
-                    <TextBox Margin="29,27,11,294">
-                        제목
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="10*"/>
+                        <RowDefinition Height="41*"/>
+                        <RowDefinition Height="14*"/>
+                        <RowDefinition Height="30*"/>
+                        <RowDefinition Height="14*"/>
+                        <RowDefinition Height="267*"/>
+                        <RowDefinition Height="21*"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="18*"/>
+                        <ColumnDefinition Width="228*"/>
+                        <ColumnDefinition Width="17*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBox Grid.Row="1" Grid.Column="1">
+
                     </TextBox>
-                    <Button Margin="29,90,11,229"></Button>
-                    <TextBox Margin="29,162,11,99" Text="hello" />
-                </Grid>
-            </TabItem>
 
-            <!--가사 삭제 탭-->
-            <TabItem Header="삭제">
-                <Grid>
-                    <ComboBox IsEditable="True" IsSynchronizedWithCurrentItem="True" RenderTransformOrigin="0.5,0.5" Margin="29,32,11,288">
-                        <TextBlock>hello</TextBlock>
-                        <TextBlock>안녕</TextBlock>
-                        <TextBlock>하세요</TextBlock>
-                    </ComboBox>
-                    <Button Margin="29,102,11,215">
-
+                    <Button Grid.Row="3" Grid.Column="1" Content="추가">
                     </Button>
+
+                    <TextBox Grid.Row="5" Grid.Column="1" AcceptsReturn="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="auto">
+
+                    </TextBox>
                 </Grid>
             </TabItem>
         </TabControl>
 
-        <!--ppt로 출력하기 관련 조작-->
-        <Border BorderBrush="Black" BorderThickness="1" Grid.Row="1" Grid.Column="3">
-            <Grid>
-                <!--파일로 출력하는 UI-->
-                <Border Margin="0,0,129,267" BorderBrush="Black" BorderThickness="0,0,1,1">
-                    <Grid>
-                        <TextBox Margin="10,36,24,57"/>
+        <!--ppt로 내보내기-->
+        <Grid Grid.Row="1" Grid.Column="3" Background="#FFF9FFF4">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50*"/>
+                <RowDefinition Height="82*"/>
+                <RowDefinition Height="121*"/>
+            </Grid.RowDefinitions>
 
-                        <TextBox Margin="10,72,24,22" />
+            <!--틀 파일 지정-->
+            <Border BorderBrush="black" BorderThickness="0.5">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="5*"/>
+                        <RowDefinition Height="29*"/>
+                        <RowDefinition Height="8*"/>
+                        <RowDefinition Height="46*"/>
+                        <RowDefinition Height="12*"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="29*"/>
+                        <ColumnDefinition Width="291*"/>
+                        <ColumnDefinition Width="27*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Row="1" Grid.Column="1" FontWeight="Bold" FontSize="14">PPT 틀 지정</Label>
+                    <Grid Grid.Row="3" Grid.Column="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="240*"/>
+                            <ColumnDefinition Width="7*"/>
+                            <ColumnDefinition Width="44*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBox Grid.Column="0" HorizontalScrollBarVisibility="auto" IsReadOnly="True"></TextBox>
+                        <Button Grid.Column="2">찾기</Button>
                     </Grid>
-                </Border>
+                </Grid>
+            </Border>
 
-                <!--바로 화면에 출력하는 UI-->
-                <Border Margin="149,0,0,267" BorderBrush="Black" BorderThickness="0,0,0,1">
+            <!--파일로 내보내기-->
+            <Border Grid.Row="1" BorderBrush="black" BorderThickness="0.5,0,0.5,0.5" >
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="10*"/>
+                        <RowDefinition Height="28*"/>
+                        <RowDefinition Height="8*"/>
+                        <RowDefinition Height="46*"/>
+                        <RowDefinition Height="17*"/>
+                        <RowDefinition Height="39*"/>
+                        <RowDefinition Height="16*"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="30*"/>
+                        <ColumnDefinition Width="289*"/>
+                        <ColumnDefinition Width="28*"/>
+                    </Grid.ColumnDefinitions>
 
-                </Border>
+                    <Label Grid.Row="1" Grid.Column="1" FontWeight="Bold" FontSize="14">파일로 내보내기</Label>
 
-                <!--특정 표식 처리부분-->
-                <ComboBox Margin="35,164,94,188">
+                    <Grid Grid.Row="3" Grid.Column="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="248*"/>
+                            <ColumnDefinition Width="41*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBox Grid.Column="0" HorizontalScrollBarVisibility="Auto"></TextBox>
+                        <Label Grid.Column="1">.pptx</Label>
+                    </Grid>
 
-                </ComboBox>
-                <TextBox Margin="35,208,94,153">
+                    <Button Grid.Row="5" Grid.Column="1" FontSize="14">내보내기</Button>
 
-                </TextBox>
-                <Button Margin="35,245,94,112">
+                </Grid>
+            </Border>
 
-                </Button>
+            <!--ppt로 바로 생성-->
+            <Border BorderBrush="black" BorderThickness="0.5,0,0.5,0.5" Grid.Row="2">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="7*"/>
+                        <RowDefinition Height="28*"/>
+                        <RowDefinition Height="18*"/>
+                        <RowDefinition Height="38*"/>
+                        <RowDefinition Height="151*"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="31*"/>
+                        <ColumnDefinition Width="287*"/>
+                        <ColumnDefinition Width="29*"/>
+                    </Grid.ColumnDefinitions>
 
-                <!--ppt 미리보기-->
-                <Border Margin="0,289,0,0" BorderBrush="black" BorderThickness="0,1,0,0">
-                    <ScrollViewer  HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Disabled" />
-                </Border>
+                    <Label Grid.Row="1" Grid.Column="1" FontWeight="Bold" FontSize="14">PPT로 생성</Label>
+                    <Button Grid.Row="3" Grid.Column="1" FontSize="14">PPT 생성</Button>
 
-
-            </Grid>
-        </Border>
+                </Grid>
+            </Border>
+        </Grid>
     </Grid>
 </Window>
