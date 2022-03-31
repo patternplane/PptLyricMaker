@@ -68,10 +68,8 @@
                                 </ColumnDefinition.Style>
                             </ColumnDefinition>
                         </Grid.ColumnDefinitions>
-                        <ComboBox Grid.Column="0"></ComboBox>
-                        <Button Grid.Column="2">
-                            가사 수정
-                        </Button>
+                        <ComboBox Grid.Column="0" IsEditable="True"></ComboBox>
+                        <Button Grid.Column="2" Content="가사/제목&#10;수정"/>
                     </Grid>
 
                     <TextBox Grid.Row="3" Grid.Column="1" >
