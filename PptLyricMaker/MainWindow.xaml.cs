@@ -28,10 +28,17 @@ namespace PptLyricMaker
         public bool needSave;
         private bool showDeleteButton_in;
         public bool showDeleteButton { get { return showDeleteButton_in; } set { showDeleteButton_in = value; NotifyPropertyChanged("showDeleteButton"); } }
+        private  String pptFormPath_in;
+        public String pptFormPath { get { return pptFormPath_in; } set { pptFormPath_in = value; NotifyPropertyChanged("pptFormPath"); } }
+
+        private String linePerSlide_in;
+        public String linePerSlide { get { return linePerSlide_in; } set { linePerSlide_in = value; NotifyPropertyChanged("linePerSlide"); } }
 
         public MainWindow()
         {
             InitializeComponent();
+
+            // 데이터 바인딩 :
 
             // 가사의 제목/곡 내용의 수정값 적용버튼 보이기 여부
             HideModifyButton();
@@ -63,6 +70,27 @@ namespace PptLyricMaker
 
             // 곡 삭제하기 버튼
             LyricDeleteButton.Click += LyricDeleteButtonClick;
+
+            // ppt 틀 경로 텍스트 및 버튼 바인딩
+            pptFormPathTextBox.DataContext = this;
+            pptFormPathButton.Click += pptFormPathButtonClick;
+
+            // 슬라이드별 줄 수 텍스트 바인딩
+            LinePerSlideTextBox.DataContext = this;
+        }
+
+        private void pptFormPathButtonClick(object sender, RoutedEventArgs e)
+        {
+            Console.WriteLine(linePerSlide);
+
+            System.Windows.Forms.OpenFileDialog pptFile = new System.Windows.Forms.OpenFileDialog();
+            pptFile.Multiselect = false;
+            pptFile.Filter = "PowerPoint파일(*.ppt,*.pptx,*.pptm)|*.ppt;*.pptx;*.pptm";
+
+            if (pptFile.ShowDialog() == System.Windows.Forms.DialogResult.Cancel)
+                return;
+
+            pptFormPath = pptFile.FileName;
         }
 
         private void LyricDeleteButtonClick(object sender, RoutedEventArgs e)

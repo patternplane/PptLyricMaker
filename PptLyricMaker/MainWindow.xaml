@@ -158,8 +158,8 @@
                             <ColumnDefinition Width="44*"/>
                         </Grid.ColumnDefinitions>
 
-                        <TextBox Grid.Column="0" HorizontalScrollBarVisibility="auto" IsReadOnly="True"></TextBox>
-                        <Button Grid.Column="2">찾기</Button>
+                        <TextBox Grid.Column="0" HorizontalScrollBarVisibility="auto" IsReadOnly="True" x:Name="pptFormPathTextBox" Text="{Binding Path=pptFormPath}"></TextBox>
+                        <Button Grid.Column="2" x:Name="pptFormPathButton">찾기</Button>
                     </Grid>
                     <Grid Grid.Row="5" Grid.Column="1">
                         <Grid.ColumnDefinitions>
@@ -169,7 +169,7 @@
                         <Label>
                             슬라이드별 줄 수 :
                         </Label>
-                        <TextBox Grid.Column="1">
+                        <TextBox Grid.Column="1" x:Name="LinePerSlideTextBox" Text="{Binding Path=linePerSlide}">
 
                         </TextBox>
                     </Grid>
