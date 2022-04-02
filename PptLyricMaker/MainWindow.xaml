@@ -201,11 +201,11 @@
                             <ColumnDefinition Width="248*"/>
                             <ColumnDefinition Width="41*"/>
                         </Grid.ColumnDefinitions>
-                        <TextBox Grid.Column="0" HorizontalScrollBarVisibility="Auto"></TextBox>
+                        <TextBox Grid.Column="0" HorizontalScrollBarVisibility="Auto" x:Name="pptOutputFileNameTextBox" Text="{Binding Path=OutputPath}"></TextBox>
                         <Label Grid.Column="1">.pptx</Label>
                     </Grid>
 
-                    <Button Grid.Row="5" Grid.Column="1" FontSize="14">내보내기</Button>
+                    <Button Grid.Row="5" Grid.Column="1" FontSize="14" x:Name="pptFileOutButton">내보내기</Button>
 
                 </Grid>
             </Border>
@@ -227,7 +227,7 @@
                     </Grid.ColumnDefinitions>
 
                     <Label Grid.Row="1" Grid.Column="1" FontWeight="Bold" FontSize="14">PPT로 생성</Label>
-                    <Button Grid.Row="3" Grid.Column="1" FontSize="14">PPT 생성</Button>
+                    <Button Grid.Row="3" Grid.Column="1" FontSize="14" x:Name="pptGenerateButton">PPT 생성</Button>
 
                 </Grid>
             </Border>

@@ -34,9 +34,22 @@ namespace PptLyricMaker
         private String linePerSlide_in;
         public String linePerSlide { get { return linePerSlide_in; } set { linePerSlide_in = value; NotifyPropertyChanged("linePerSlide"); } }
 
+        private String OutputPath_in;
+        public String OutputPath { get { return OutputPath_in; } set { OutputPath_in = value; NotifyPropertyChanged("OutputPath"); } }
+
+        public String OutputPptPath;
+
+        private Module.PowerPointApp powerpoint;
+
         public MainWindow()
         {
             InitializeComponent();
+
+            // 변수 초기화
+            pptFormPath = "";
+            linePerSlide = "";
+            OutputPath = "";
+
 
             // 데이터 바인딩 :
 
@@ -77,12 +90,102 @@ namespace PptLyricMaker
 
             // 슬라이드별 줄 수 텍스트 바인딩
             LinePerSlideTextBox.DataContext = this;
+            // 숫자만 입력받기
+            LinePerSlideTextBox.KeyDown += LinePerSlideTextBox_KeyDown;
+
+            // ppt 출력파일의 이름 텍스트 바인딩
+            pptOutputFileNameTextBox.DataContext = this;
+
+            // ppt 파일로 출력하기 버튼
+            pptFileOutButton.Click += pptOutputButtonClick;
+
+            // ppt 생성하기 버튼
+            pptGenerateButton.Click += pptGenerateButtonClick;
+
+
+
+
+            // ppt 연결
+            powerpoint = new Module.PowerPointApp();
+
+
+            // 마지막 처리
+            this.Closed += finalProcess;
+        }
+
+        private void finalProcess(object sender, EventArgs e)
+        {
+            ly.SaveAll();
+        }
+
+        private void LinePerSlideTextBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if ((e.Key >= Key.D0 && e.Key <= Key.D9) || (e.Key >= Key.NumPad0 && e.Key <= Key.NumPad9) || e.Key == Key.Back || e.Key == Key.Delete)
+            {
+                e.Handled = false;
+            }
+            else
+                e.Handled = true;
+        }
+
+        private void pptGenerateButtonClick(object sender, RoutedEventArgs e)
+        {
+            linePerSlide = linePerSlide.Replace(" ", "");
+            if (LyricComboBox.SelectedIndex == -1)
+            {
+                MessageBox.Show("출력할 곡을 선택하지 않았습니다.", "곡이 선택되지 않음", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+            if (pptFormPath.Length == 0)
+            {
+                MessageBox.Show("ppt 틀 파일이 입력되지 않았습니다.", "ppt 프레임", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+            if (linePerSlide.Length == 0)
+            {
+                MessageBox.Show("슬라이드별 줄 수가 입력되지 않았습니다.", "슬라이드별 줄 수", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            powerpoint.GeneratePpt(pptFormPath, ((Module.SingleLyric)LyricComboBox.SelectedItem).content, Convert.ToInt32(linePerSlide));
+        }
+
+        private void pptOutputButtonClick(object sender, RoutedEventArgs e)
+        {
+            linePerSlide = linePerSlide.Replace(" ", "");
+            if (LyricComboBox.SelectedIndex == -1)
+            {
+                MessageBox.Show("출력할 곡을 선택하지 않았습니다.", "곡이 선택되지 않음", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+            if (pptFormPath.Length == 0)
+            {
+                MessageBox.Show("ppt 틀 파일이 입력되지 않았습니다.", "ppt 프레임", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+            if (linePerSlide.Length == 0)
+            {
+                MessageBox.Show("슬라이드별 줄 수가 입력되지 않았습니다.", "슬라이드별 줄 수",MessageBoxButton.OK,MessageBoxImage.Warning);
+                return;
+            }
+            if (OutputPath.Length == 0)
+            {
+                MessageBox.Show("출력할 파일 이름이 입력되지 않았습니다.", "파일명", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            System.Windows.Forms.FolderBrowserDialog pptFile = new System.Windows.Forms.FolderBrowserDialog();
+
+            if (pptFile.ShowDialog() == System.Windows.Forms.DialogResult.Cancel)
+                return;
+
+            OutputPptPath = pptFile.SelectedPath;
+
+            powerpoint.SavePptFile(pptFormPath, OutputPptPath + "\\" + OutputPath, ((Module.SingleLyric)LyricComboBox.SelectedItem).content, Convert.ToInt32(linePerSlide));
         }
 
         private void pptFormPathButtonClick(object sender, RoutedEventArgs e)
         {
-            Console.WriteLine(linePerSlide);
-
             System.Windows.Forms.OpenFileDialog pptFile = new System.Windows.Forms.OpenFileDialog();
             pptFile.Multiselect = false;
             pptFile.Filter = "PowerPoint파일(*.ppt,*.pptx,*.pptm)|*.ppt;*.pptx;*.pptm";
