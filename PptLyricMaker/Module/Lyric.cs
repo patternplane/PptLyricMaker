@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 using System.IO;
 using System.Windows;
+using System.ComponentModel;
 
 namespace PptLyricMaker.Module
 {
@@ -14,16 +15,27 @@ namespace PptLyricMaker.Module
     /// </summary>
     public class Lyric
     {
-        private List<SingleLyric> lyricArray;
-        public List<SingleLyric> lyricList { get { return lyricArray; } }
+        private BindingList<SingleLyric> lyricArray;
+        public BindingList<SingleLyric> lyricList { get { return lyricArray; } }
 
         public Lyric()
         {
             lyricArray = LyricFile.getLyricInfo();
-            lyricArray.Sort(delegate (SingleLyric a, SingleLyric b) { return a.title.CompareTo(b.title); });
 
             if (lyricArray == null)
                 MessageBox.Show("가사 불러오기 실패!\n프로그램을 종료 후 다시 시작해주세요.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+        }
+
+        public void addLyric(String title, String content)
+        {
+            foreach (SingleLyric t in lyricArray)
+                if (t.title.CompareTo(title) == 0)
+                {
+                    // 동일한 제목의 곡 존재
+                    throw new Exception("동일한 제목의 곡이 있습니다!");
+                }
+            // 동일한 제목의 곡이 없다면 추가
+            lyricArray.Add(new SingleLyric() {title=title, content=content});
         }
 
         public void SaveAll()
@@ -83,7 +95,7 @@ namespace PptLyricMaker.Module
         /// 가사 리스트.<br/>
         /// 읽기에 실패하면 null을 반환합니다.
         /// </returns>
-        public static List<SingleLyric> getLyricInfo()
+        public static BindingList<SingleLyric> getLyricInfo()
         {
             List<SingleLyric> lyricArray;
 
@@ -99,11 +111,12 @@ namespace PptLyricMaker.Module
                         di.Create();
                     }
 
-                    lyricArray = new List<SingleLyric>(0);
+                    lyricArray = new List<SingleLyric>();
                 }
                 else
                 {
-                    lyricArray = new List<SingleLyric>(50);
+                    // 파일이 존재한다면 불러오기
+                    lyricArray = new List<SingleLyric>();
 
                     // 파일의 내용을 버퍼 단위로 읽어옴
                     StreamReader file = new StreamReader(LYRIC_PATH);
@@ -154,6 +167,9 @@ namespace PptLyricMaker.Module
                             content.Append(buffer, startPos, endPos - startPos);
                     }
 
+                    // 정렬
+                    lyricArray.Sort(delegate (SingleLyric a, SingleLyric b) { return a.title.CompareTo(b.title); });
+
                     file.Close();
                 }
             }
@@ -162,7 +178,7 @@ namespace PptLyricMaker.Module
                 lyricArray = null;
             }
 
-            return lyricArray;
+            return new BindingList<SingleLyric>(lyricArray);
         }
 
         /// <summary>
@@ -171,7 +187,7 @@ namespace PptLyricMaker.Module
         /// <param name="lyricArray">
         /// 전체 가사 리스트
         /// </param>
-        public static void SaveAll(List<SingleLyric> lyricArray)
+        public static void SaveAll(BindingList<SingleLyric> lyricArray)
         {
             StreamWriter file = new StreamWriter(LYRIC_PATH,false);
 
