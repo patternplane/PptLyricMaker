@@ -26,13 +26,15 @@
             <TabItem Header="곡 선택">
                 <Grid>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="10*"/>
+                        <RowDefinition Height="7*"/>
                         <RowDefinition Height="30*"/>
-                        <RowDefinition Height="14*"/>
-                        <RowDefinition Height="41*"/>
-                        <RowDefinition Height="14*"/>
-                        <RowDefinition Height="267*"/>
-                        <RowDefinition Height="21*"/>
+                        <RowDefinition Height="9*"/>
+                        <RowDefinition Height="40*"/>
+                        <RowDefinition Height="9*"/>
+                        <RowDefinition Height="40*"/>
+                        <RowDefinition Height="9*"/>
+                        <RowDefinition Height="309*"/>
+                        <RowDefinition Height="25*"/>
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="18*"/>
@@ -40,45 +42,31 @@
                         <ColumnDefinition Width="17*"/>
                     </Grid.ColumnDefinitions>
 
-                    <Grid Grid.Row="1" Grid.Column="1" x:Name="ModifyButtonGrid">
+                    <ComboBox Grid.Row="1" Grid.Column="1" x:Name="LyricComboBox"/>
+
+                    <Grid Grid.Row="3" Grid.Column="1" x:Name="ModifyButtonGrid">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="163*"/>
-                            <ColumnDefinition >
-                                <ColumnDefinition.Style>
-                                    <Style TargetType="ColumnDefinition">
-                                        <Setter Property="Width" Value="11*"></Setter>
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding Path=showButton}" Value="False">
-                                                <Setter Property="Width" Value="0"/>
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </ColumnDefinition.Style>
-                            </ColumnDefinition>
-                            <ColumnDefinition>
-                                <ColumnDefinition.Style>
-                                    <Style TargetType="ColumnDefinition">
-                                        <Setter Property="Width" Value="54*"></Setter>
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding showButton}" Value="False">
-                                                <Setter Property="Width" Value="0"/>
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </ColumnDefinition.Style>
-                            </ColumnDefinition>
+                            <ColumnDefinition Width="11*"/>
+                            <ColumnDefinition Width="54*"/>
                         </Grid.ColumnDefinitions>
-                        <ComboBox Grid.Column="0" IsEditable="True" x:Name="LyricComboBox">
-
-                        </ComboBox>
-                        <Button Grid.Column="2" Content="가사/제목&#10;수정"/>
+                        <TextBox Text="{Binding ElementName=LyricComboBox, Path=SelectedItem.title, Mode=OneWay}" x:Name="LyricTitleModifyTextBox">
+                        </TextBox>
+                        <Button Grid.Column="2" Content="가사/제목&#10;수정" IsEnabled="{Binding Path=showModifyButton, Mode=OneWay}" x:Name="LyricModifyButton"/>
                     </Grid>
 
-                    <TextBox Grid.Row="3" Grid.Column="1" >
+                    <TextBox Grid.Row="5" Grid.Column="1" >
                         가사 또는 제목으로 검색
                     </TextBox>
 
-                    <TextBox Grid.Row="5" Grid.Column="1" AcceptsReturn="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="auto">
+                    <TextBox 
+                        Grid.Row="7" 
+                        Grid.Column="1" 
+                        AcceptsReturn="True" 
+                        HorizontalScrollBarVisibility="Auto" 
+                        VerticalScrollBarVisibility="auto" 
+                        x:Name="LyricContentTextBox"
+                        Text="{Binding ElementName=LyricComboBox, Path=SelectedItem.content, Mode=OneWay}">
 
                     </TextBox>
                 </Grid>
