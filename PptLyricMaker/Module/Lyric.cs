@@ -38,6 +38,12 @@ namespace PptLyricMaker.Module
             lyricArray.Add(new SingleLyric() {title=title, content=content});
         }
 
+        public void deleteLyric(int index)
+        {
+            if ((index >= 0) && (index < lyricArray.Count))
+                lyricArray.Remove(lyricArray[index]);
+        }
+
         public void SaveAll()
         {
             try

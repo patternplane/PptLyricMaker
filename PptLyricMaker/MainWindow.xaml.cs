@@ -26,6 +26,8 @@ namespace PptLyricMaker
         private bool showModifyButton_in;
         public bool showModifyButton { get { return showModifyButton_in; } set { showModifyButton_in = value; NotifyPropertyChanged("showModifyButton"); } }
         public bool needSave;
+        private bool showDeleteButton_in;
+        public bool showDeleteButton { get { return showDeleteButton_in; } set { showDeleteButton_in = value; NotifyPropertyChanged("showDeleteButton"); } }
 
         public MainWindow()
         {
@@ -34,7 +36,11 @@ namespace PptLyricMaker
             // 가사의 제목/곡 내용의 수정값 적용버튼 보이기 여부
             HideModifyButton();
             LyricModifyButton.DataContext = this;
-            
+
+            // 곡 삭제버튼 보이기 여부
+            HideDeleteButton();
+            LyricDeleteButton.DataContext = this;
+
             // 가사 리스트를 ComboBox에 바인딩
             ly = new Module.Lyric();
             LyricComboBox.DisplayMemberPath = "title";
@@ -47,13 +53,26 @@ namespace PptLyricMaker
             LyricTitleModifyTextBox.TextChanged += Event_ShowModifyButton;
             LyricContentTextBox.TextChanged += Event_ShowModifyButton;
             // 단, 다른 곡을 선택한 경우엔 취소
-            LyricComboBox.SelectionChanged += Event_HideModifyButton;
+            LyricComboBox.SelectionChanged += Event_SelectChanged;
 
             // 제목/곡 변경하기 버튼
             LyricModifyButton.Click += ModifyButtonClick;
 
             // 저장하지 않고 다른 곡 선택을 시도할 경우 경고하기
             LyricComboBox.DropDownOpened += NotSavedWarning;
+
+            // 곡 삭제하기 버튼
+            LyricDeleteButton.Click += LyricDeleteButtonClick;
+        }
+
+        private void LyricDeleteButtonClick(object sender, RoutedEventArgs e)
+        {
+            MessageBoxResult r = MessageBox.Show("곡 \"" + ((Module.SingleLyric)LyricComboBox.SelectedItem).title + "\" 을 삭제합니다.","곡 삭제",MessageBoxButton.OKCancel,MessageBoxImage.Warning);
+            if (r == MessageBoxResult.OK)
+            {
+                ly.deleteLyric(LyricComboBox.SelectedIndex);
+                HideDeleteButton();
+            }
         }
 
         private void ModifyButtonClick(object sender, RoutedEventArgs e)
@@ -97,15 +116,26 @@ namespace PptLyricMaker
             showModifyButton = true;
         }
 
-        private void Event_HideModifyButton(object sender, SelectionChangedEventArgs e)
+        private void ShowDeleteButton()
+        {
+            showDeleteButton = true;
+        }
+
+        private void Event_SelectChanged(object sender, SelectionChangedEventArgs e)
         {
             HideModifyButton();
+            ShowDeleteButton();
         }
 
         private void HideModifyButton()
         {
             needSave = false;
             showModifyButton = false;
+        }
+
+        private void HideDeleteButton()
+        {
+            showDeleteButton = false;
         }
 
         /// <summary>

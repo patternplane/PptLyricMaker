@@ -50,14 +50,29 @@
                             <ColumnDefinition Width="11*"/>
                             <ColumnDefinition Width="54*"/>
                         </Grid.ColumnDefinitions>
-                        <TextBox Text="{Binding ElementName=LyricComboBox, Path=SelectedItem.title, Mode=OneWay}" x:Name="LyricTitleModifyTextBox">
+                        <TextBox Text="{Binding ElementName=LyricComboBox, Path=SelectedItem.title, Mode=OneWay}" x:Name="LyricTitleModifyTextBox" HorizontalScrollBarVisibility="auto">
                         </TextBox>
                         <Button Grid.Column="2" Content="가사/제목&#10;수정" IsEnabled="{Binding Path=showModifyButton, Mode=OneWay}" x:Name="LyricModifyButton"/>
                     </Grid>
 
-                    <TextBox Grid.Row="5" Grid.Column="1" >
-                        가사 또는 제목으로 검색
-                    </TextBox>
+                    <Grid Grid.Row="5" Grid.Column="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="209*"/>
+                            <ColumnDefinition Width="16*"/>
+                            <ColumnDefinition Width="70*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBox  Grid.Column="0" Text="아직 사용할 수 없음&#10;(가사 또는 제목으로 검색)">
+                            <TextBox.IsEnabled>
+                                false
+                            </TextBox.IsEnabled>
+                            <TextBox.AcceptsReturn>
+                                true
+                            </TextBox.AcceptsReturn>
+                        </TextBox>
+                        <Button Grid.Column="2" Content="곡 삭제" x:Name="LyricDeleteButton" IsEnabled="{Binding Path=showDeleteButton}">
+
+                        </Button>
+                    </Grid>
 
                     <TextBox 
                         Grid.Row="7" 
