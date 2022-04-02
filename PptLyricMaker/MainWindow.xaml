@@ -102,14 +102,20 @@
                         <ColumnDefinition Width="17*"/>
                     </Grid.ColumnDefinitions>
 
-                    <TextBox Grid.Row="1" Grid.Column="1">
+                    <TextBox Grid.Row="1" Grid.Column="1" x:Name="LyricAddTitle">
 
                     </TextBox>
 
-                    <Button Grid.Row="3" Grid.Column="1" Content="추가">
+                    <Button Grid.Row="3" Grid.Column="1" Content="추가" x:Name="LyricAddButton">
                     </Button>
 
-                    <TextBox Grid.Row="5" Grid.Column="1" AcceptsReturn="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="auto">
+                    <TextBox 
+                        Grid.Row="5" 
+                        Grid.Column="1" 
+                        AcceptsReturn="True" 
+                        HorizontalScrollBarVisibility="Auto" 
+                        VerticalScrollBarVisibility="auto"
+                        x:Name="LyricAddContent">
 
                     </TextBox>
                 </Grid>
