@@ -68,7 +68,9 @@
                                 </ColumnDefinition.Style>
                             </ColumnDefinition>
                         </Grid.ColumnDefinitions>
-                        <ComboBox Grid.Column="0" IsEditable="True"></ComboBox>
+                        <ComboBox Grid.Column="0" IsEditable="True" x:Name="LyricComboBox">
+                            
+                        </ComboBox>
                         <Button Grid.Column="2" Content="가사/제목&#10;수정"/>
                     </Grid>
 

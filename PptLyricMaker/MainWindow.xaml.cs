@@ -32,6 +32,9 @@ namespace PptLyricMaker
             ModifyButtonVisibility ModifyButtonVisible = new ModifyButtonVisibility() {showButton = false};
             ModifyButtonGrid.DataContext = ModifyButtonVisible;
 
+            Module.Lyric ly = new Module.Lyric();
+            LyricComboBox.DisplayMemberPath = "title";
+            LyricComboBox.ItemsSource = ly.lyricList;
         }
     }
 }

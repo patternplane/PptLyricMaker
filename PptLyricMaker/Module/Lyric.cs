@@ -15,10 +15,12 @@ namespace PptLyricMaker.Module
     public class Lyric
     {
         private List<SingleLyric> lyricArray;
+        public List<SingleLyric> lyricList { get { return lyricArray; } }
 
         public Lyric()
         {
             lyricArray = LyricFile.getLyricInfo();
+            lyricArray.Sort(delegate (SingleLyric a, SingleLyric b) { return a.title.CompareTo(b.title); });
 
             if (lyricArray == null)
                 MessageBox.Show("가사 불러오기 실패!\n프로그램을 종료 후 다시 시작해주세요.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
@@ -58,7 +60,7 @@ namespace PptLyricMaker.Module
     /// <summary>
     /// 곡의 한 단위를 나타냅니다.
     /// </summary>
-    class SingleLyric
+    public class SingleLyric
     {
         public String title { get; set; }
         public String content { get; set; }
