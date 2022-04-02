@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:PptLyricMaker"
         mc:Ignorable="d"
         Title="CCM Lyric" Height="580" Width="767"
-        Icon="icon.png">
+        Icon="icon.ico">
     <Grid Background="#FFFDFDFD">
         <Grid.RowDefinitions>
             <RowDefinition Height="21*"/>
