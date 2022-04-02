@@ -19,7 +19,7 @@
             <ColumnDefinition Width="347*"/>
             <ColumnDefinition Width="25*"/>
         </Grid.ColumnDefinitions>
-        
+
         <!--곡 추가 및 수정-->
         <TabControl Grid.Row="1" Grid.Column="1" Background="#FFEBFFEF">
             <!--곡 선택-->
@@ -69,7 +69,7 @@
                             </ColumnDefinition>
                         </Grid.ColumnDefinitions>
                         <ComboBox Grid.Column="0" IsEditable="True" x:Name="LyricComboBox">
-                            
+
                         </ComboBox>
                         <Button Grid.Column="2" Content="가사/제목&#10;수정"/>
                     </Grid>
@@ -119,20 +119,22 @@
         <!--ppt로 내보내기-->
         <Grid Grid.Row="1" Grid.Column="3" Background="#FFF9FFF4">
             <Grid.RowDefinitions>
-                <RowDefinition Height="50*"/>
-                <RowDefinition Height="82*"/>
-                <RowDefinition Height="121*"/>
+                <RowDefinition Height="128*"/>
+                <RowDefinition Height="155*"/>
+                <RowDefinition Height="223*"/>
             </Grid.RowDefinitions>
 
             <!--틀 파일 지정-->
             <Border BorderBrush="black" BorderThickness="0.5">
                 <Grid>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="5*"/>
-                        <RowDefinition Height="29*"/>
+                        <RowDefinition Height="7*"/>
+                        <RowDefinition Height="28*"/>
                         <RowDefinition Height="8*"/>
-                        <RowDefinition Height="46*"/>
-                        <RowDefinition Height="12*"/>
+                        <RowDefinition Height="43*"/>
+                        <RowDefinition Height="5*"/>
+                        <RowDefinition Height="27*"/>
+                        <RowDefinition Height="10*"/>
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="29*"/>
@@ -149,6 +151,18 @@
 
                         <TextBox Grid.Column="0" HorizontalScrollBarVisibility="auto" IsReadOnly="True"></TextBox>
                         <Button Grid.Column="2">찾기</Button>
+                    </Grid>
+                    <Grid Grid.Row="5" Grid.Column="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="116*"/>
+                            <ColumnDefinition Width="175*"/>
+                        </Grid.ColumnDefinitions>
+                        <Label>
+                            슬라이드별 줄 수 :
+                        </Label>
+                        <TextBox Grid.Column="1">
+
+                        </TextBox>
                     </Grid>
                 </Grid>
             </Border>
