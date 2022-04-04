@@ -23,6 +23,10 @@ namespace PptLyricMaker
     public partial class MainWindow : Window, INotifyPropertyChanged
     {
         private Module.Lyric ly;
+        public Module.Option ProgramOption;
+        private Option Window_Option;
+        private Module.PowerPointApp powerpoint;
+
         private bool showModifyButton_in;
         public bool showModifyButton { get { return showModifyButton_in; } set { showModifyButton_in = value; NotifyPropertyChanged("showModifyButton"); } }
         public bool needSave;
@@ -34,24 +38,39 @@ namespace PptLyricMaker
         private String linePerSlide_in;
         public String linePerSlide { get { return linePerSlide_in; } set { linePerSlide_in = value; NotifyPropertyChanged("linePerSlide"); } }
 
-        private String OutputPath_in;
-        public String OutputPath { get { return OutputPath_in; } set { OutputPath_in = value; NotifyPropertyChanged("OutputPath"); } }
+        private String OutputFileName_in;
+        public String OutputFileName { get { return OutputFileName_in; } set { OutputFileName_in = value; NotifyPropertyChanged("OutputPath"); } }
 
         private String OutputPptPath_in;
         public String OutputPptPath { get { return OutputPptPath_in; } set { OutputPptPath_in = value; NotifyPropertyChanged("OutputPptPath"); } }
 
-        private Module.PowerPointApp powerpoint;
+        // ppt 출력 경로찾기 윈도우
+        private Microsoft.Office.Core.FileDialog pptOutPath;
+        // ppt 틀 파일 찾기 윈도우
+        System.Windows.Forms.OpenFileDialog pptFile;
 
         public MainWindow()
         {
             InitializeComponent();
 
+            // 필요 객체 세팅
+            ly = new Module.Lyric();
+            ProgramOption = new Module.Option();
+            powerpoint = new Module.PowerPointApp();
+
+
             // 변수 초기화
             pptFormPath = "";
             linePerSlide = "";
-            OutputPath = "";
-            OutputPptPath = "";
+            OutputFileName = "";
+            OutputPptPath = ProgramOption.defaultPptOutPath;
+            pptOutPath = new Microsoft.Office.Interop.PowerPoint.Application().FileDialog[Microsoft.Office.Core.MsoFileDialogType.msoFileDialogFolderPicker];
+            pptOutPath.InitialFileName = ProgramOption.defaultPptOutPath;
 
+            pptFile = new System.Windows.Forms.OpenFileDialog();
+            pptFile.InitialDirectory = ProgramOption.defaultPptFormSearchPath;
+            pptFile.Multiselect = false;
+            pptFile.Filter = "PowerPoint파일(*.ppt,*.pptx,*.pptm)|*.ppt;*.pptx;*.pptm";
 
             // 데이터 바인딩 :
 
@@ -64,7 +83,6 @@ namespace PptLyricMaker
             LyricDeleteButton.DataContext = this;
 
             // 가사 리스트를 ComboBox에 바인딩
-            ly = new Module.Lyric();
             LyricComboBox.DisplayMemberPath = "title";
             LyricComboBox.ItemsSource = ly.lyricList;
 
@@ -108,31 +126,33 @@ namespace PptLyricMaker
             pptFileOutPath.DataContext = this;
             pptFileOutPathButton.Click += pptFileOutButtonClick;
 
+            // 옵션 버튼
+            OptionButton.Click += OptionButtonClick;
 
 
-            // ppt 연결
-            powerpoint = new Module.PowerPointApp();
-
-
-            // 마지막 처리
+            // 마지막 처리함수 등록
             this.Closed += finalProcess;
+        }
+
+        private void OptionButtonClick(object sender, RoutedEventArgs e)
+        {
+            new Option(ProgramOption).ShowDialog();
         }
 
         private void pptFileOutButtonClick(object sender, RoutedEventArgs e)
         {
-            Microsoft.Office.Core.FileDialog pptFile = new Microsoft.Office.Interop.PowerPoint.Application().FileDialog[Microsoft.Office.Core.MsoFileDialogType.msoFileDialogFolderPicker];
-            pptFile.Show();
-
-            
-            if (pptFile.SelectedItems.Count == 0)
+            pptOutPath.Show();
+            if (pptOutPath.SelectedItems.Count == 0)
                 return;
 
-            OutputPptPath = pptFile.SelectedItems.Item(1);
+            OutputPptPath = pptOutPath.SelectedItems.Item(1) + "\\";
+            pptOutPath.InitialFileName = pptOutPath.SelectedItems.Item(1) + "\\";
         }
 
         private void finalProcess(object sender, EventArgs e)
         {
             ly.SaveAll();
+            ProgramOption.saveOptionData();
         }
 
         private void LinePerSlideTextBox_KeyDown(object sender, KeyEventArgs e)
@@ -185,7 +205,7 @@ namespace PptLyricMaker
                 MessageBox.Show("슬라이드별 줄 수가 입력되지 않았습니다.", "슬라이드별 줄 수",MessageBoxButton.OK,MessageBoxImage.Warning);
                 return;
             }
-            if (OutputPath.Length == 0)
+            if (OutputFileName.Length == 0)
             {
                 MessageBox.Show("출력할 파일 이름이 입력되지 않았습니다.", "파일명", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
@@ -196,18 +216,15 @@ namespace PptLyricMaker
                 return;
             }
 
-            powerpoint.SavePptFile(pptFormPath, OutputPptPath + "\\" + OutputPath, ((Module.SingleLyric)LyricComboBox.SelectedItem).content, Convert.ToInt32(linePerSlide));
+            powerpoint.SavePptFile(pptFormPath, OutputPptPath + OutputFileName, ((Module.SingleLyric)LyricComboBox.SelectedItem).content, Convert.ToInt32(linePerSlide));
         }
 
         private void pptFormPathButtonClick(object sender, RoutedEventArgs e)
         {
-            System.Windows.Forms.OpenFileDialog pptFile = new System.Windows.Forms.OpenFileDialog();
-            pptFile.Multiselect = false;
-            pptFile.Filter = "PowerPoint파일(*.ppt,*.pptx,*.pptm)|*.ppt;*.pptx;*.pptm";
-
             if (pptFile.ShowDialog() == System.Windows.Forms.DialogResult.Cancel)
                 return;
 
+            pptFile.InitialDirectory = System.IO.Path.GetDirectoryName(pptFile.FileName) + "\\";
             pptFormPath = pptFile.FileName;
         }
 

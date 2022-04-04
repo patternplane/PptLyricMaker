@@ -131,7 +131,9 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="128*"/>
                 <RowDefinition Height="219*"/>
-                <RowDefinition Height="159*"/>
+                <RowDefinition Height="109*"/>
+                <RowDefinition Height="38*"/>
+                <RowDefinition Height="12*"/>
             </Grid.RowDefinitions>
 
             <!--틀 파일 지정-->
@@ -204,7 +206,7 @@
                             <ColumnDefinition Width="14*"/>
                             <ColumnDefinition Width="3*"/>
                         </Grid.ColumnDefinitions>
-                        <TextBox Grid.Column="0" HorizontalScrollBarVisibility="Auto" x:Name="pptOutputFileNameTextBox" Text="{Binding Path=OutputPath}"></TextBox>
+                        <TextBox Grid.Column="0" HorizontalScrollBarVisibility="Auto" x:Name="pptOutputFileNameTextBox" Text="{Binding Path=OutputFileName}"></TextBox>
                         <Label Grid.Column="1">.pptx</Label>
                     </Grid>
 
@@ -225,7 +227,7 @@
             </Border>
 
             <!--ppt로 바로 생성-->
-            <Border BorderBrush="black" BorderThickness="0.5,0,0.5,0.5" Grid.Row="2">
+            <Border BorderBrush="black" BorderThickness="0.5,0,0.5,0.5" Grid.Row="2" Grid.RowSpan="3">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="7*"/>
@@ -245,6 +247,18 @@
 
                 </Grid>
             </Border>
+
+            <!--옵션-->
+            <Grid Grid.Row="3" >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="318*"/>
+                    <ColumnDefinition Width="29*"/>
+                </Grid.ColumnDefinitions>
+
+                <Button x:Name="OptionButton" HorizontalAlignment="Right">
+                    <Image Source="setting.jpg"/>
+                </Button>
+            </Grid>
         </Grid>
     </Grid>
 </Window>
