@@ -91,8 +91,6 @@ namespace PptLyricMaker.Module
     {
         const char SEPARATOR = '∂';
         const char CR = (char)0xd;
-        const string DATA_PATH = ".\\data";
-        const string LYRIC_PATH = ".\\data\\Lyrics";
 
         /// <summary>
         /// 파일로부터 전체 가사를 읽어 리스트로 변환합니다.
@@ -108,10 +106,10 @@ namespace PptLyricMaker.Module
             try
             {
                 // 파일 존재 확인
-                FileInfo fi = new FileInfo(LYRIC_PATH);
+                FileInfo fi = new FileInfo(Module.FilePath.LYRIC_PATH);
                 if (!fi.Exists)
                 {
-                    DirectoryInfo di = new DirectoryInfo(DATA_PATH);
+                    DirectoryInfo di = new DirectoryInfo(Module.FilePath.DATA_PATH);
                     if (!di.Exists)
                     {
                         di.Create();
@@ -125,7 +123,7 @@ namespace PptLyricMaker.Module
                     lyricArray = new List<SingleLyric>();
 
                     // 파일의 내용을 버퍼 단위로 읽어옴
-                    StreamReader file = new StreamReader(LYRIC_PATH);
+                    StreamReader file = new StreamReader(Module.FilePath.LYRIC_PATH);
                     int BUF_LEN = 4096;
                     char[] buffer = new char[BUF_LEN];
                     int readLen;
@@ -195,7 +193,7 @@ namespace PptLyricMaker.Module
         /// </param>
         public static void SaveAll(BindingList<SingleLyric> lyricArray)
         {
-            StreamWriter file = new StreamWriter(LYRIC_PATH,false);
+            StreamWriter file = new StreamWriter(Module.FilePath.LYRIC_PATH,false);
 
             try
             {
