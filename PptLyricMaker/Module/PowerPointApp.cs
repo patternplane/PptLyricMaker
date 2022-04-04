@@ -20,6 +20,10 @@ namespace PptLyricMaker.Module
         {
             Presentation form = App.Presentations.Open(FormFile, WithWindow: Microsoft.Office.Core.MsoTriState.msoFalse);
             Presentation ppt = App.Presentations.Add(Microsoft.Office.Core.MsoTriState.msoFalse);
+            ppt.PageSetup.SlideOrientation = form.PageSetup.SlideOrientation;
+            ppt.PageSetup.SlideSize = form.PageSetup.SlideSize;
+            ppt.PageSetup.SlideHeight = form.PageSetup.SlideHeight;
+            ppt.PageSetup.SlideWidth = form.PageSetup.SlideWidth;
 
             makeSlides(form, ppt, content, lineNumber);
 
@@ -32,6 +36,10 @@ namespace PptLyricMaker.Module
         {
             Presentation form = App.Presentations.Open(FormFile, WithWindow: Microsoft.Office.Core.MsoTriState.msoFalse);
             Presentation ppt = App.Presentations.Add();
+            ppt.PageSetup.SlideOrientation = form.PageSetup.SlideOrientation;
+            ppt.PageSetup.SlideSize = form.PageSetup.SlideSize;
+            ppt.PageSetup.SlideHeight = form.PageSetup.SlideHeight;
+            ppt.PageSetup.SlideWidth = form.PageSetup.SlideWidth;
 
             makeSlides(form, ppt, content, lineNumber);
             form.Close();
