@@ -130,8 +130,8 @@
         <Grid Grid.Row="1" Grid.Column="3" Background="#FFF9FFF4">
             <Grid.RowDefinitions>
                 <RowDefinition Height="128*"/>
-                <RowDefinition Height="155*"/>
-                <RowDefinition Height="223*"/>
+                <RowDefinition Height="219*"/>
+                <RowDefinition Height="159*"/>
             </Grid.RowDefinitions>
 
             <!--틀 파일 지정-->
@@ -181,13 +181,15 @@
             <Border Grid.Row="1" BorderBrush="black" BorderThickness="0.5,0,0.5,0.5" >
                 <Grid>
                     <Grid.RowDefinitions>
+                        <RowDefinition Height="6*"/>
+                        <RowDefinition Height="30*"/>
                         <RowDefinition Height="10*"/>
-                        <RowDefinition Height="28*"/>
-                        <RowDefinition Height="8*"/>
-                        <RowDefinition Height="46*"/>
-                        <RowDefinition Height="17*"/>
-                        <RowDefinition Height="39*"/>
-                        <RowDefinition Height="16*"/>
+                        <RowDefinition Height="48*"/>
+                        <RowDefinition Height="13*"/>
+                        <RowDefinition Height="47*"/>
+                        <RowDefinition Height="13*"/>
+                        <RowDefinition Height="42*"/>
+                        <RowDefinition Height="10*"/>
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="30*"/>
@@ -199,14 +201,25 @@
 
                     <Grid Grid.Row="3" Grid.Column="1">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="248*"/>
-                            <ColumnDefinition Width="41*"/>
+                            <ColumnDefinition Width="14*"/>
+                            <ColumnDefinition Width="3*"/>
                         </Grid.ColumnDefinitions>
                         <TextBox Grid.Column="0" HorizontalScrollBarVisibility="Auto" x:Name="pptOutputFileNameTextBox" Text="{Binding Path=OutputPath}"></TextBox>
                         <Label Grid.Column="1">.pptx</Label>
                     </Grid>
 
-                    <Button Grid.Row="5" Grid.Column="1" FontSize="14" x:Name="pptFileOutButton">내보내기</Button>
+                    <Grid Grid.Row="5" Grid.Column="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="240*"/>
+                            <ColumnDefinition Width="7*"/>
+                            <ColumnDefinition Width="44*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBox Grid.Column="0" HorizontalScrollBarVisibility="auto" IsReadOnly="True" x:Name="pptFileOutPath" Text="{Binding Path=OutputPptPath}"></TextBox>
+                        <Button Grid.Column="2" x:Name="pptFileOutPathButton">찾기</Button>
+                    </Grid>
+
+                    <Button Grid.Row="7" Grid.Column="1" FontSize="14" x:Name="pptFileOutButton">내보내기</Button>
 
                 </Grid>
             </Border>
@@ -216,10 +229,10 @@
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="7*"/>
-                        <RowDefinition Height="28*"/>
-                        <RowDefinition Height="18*"/>
-                        <RowDefinition Height="38*"/>
-                        <RowDefinition Height="151*"/>
+                        <RowDefinition Height="29*"/>
+                        <RowDefinition Height="13*"/>
+                        <RowDefinition Height="45*"/>
+                        <RowDefinition Height="65*"/>
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="31*"/>

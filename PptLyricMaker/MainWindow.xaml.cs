@@ -37,7 +37,8 @@ namespace PptLyricMaker
         private String OutputPath_in;
         public String OutputPath { get { return OutputPath_in; } set { OutputPath_in = value; NotifyPropertyChanged("OutputPath"); } }
 
-        public String OutputPptPath;
+        private String OutputPptPath_in;
+        public String OutputPptPath { get { return OutputPptPath_in; } set { OutputPptPath_in = value; NotifyPropertyChanged("OutputPptPath"); } }
 
         private Module.PowerPointApp powerpoint;
 
@@ -49,6 +50,7 @@ namespace PptLyricMaker
             pptFormPath = "";
             linePerSlide = "";
             OutputPath = "";
+            OutputPptPath = "";
 
 
             // 데이터 바인딩 :
@@ -102,6 +104,9 @@ namespace PptLyricMaker
             // ppt 생성하기 버튼
             pptGenerateButton.Click += pptGenerateButtonClick;
 
+            // ppt 파일 출력 경로 텍스트 및 버튼 바인딩
+            pptFileOutPath.DataContext = this;
+            pptFileOutPathButton.Click += pptFileOutButtonClick;
 
 
 
@@ -111,6 +116,18 @@ namespace PptLyricMaker
 
             // 마지막 처리
             this.Closed += finalProcess;
+        }
+
+        private void pptFileOutButtonClick(object sender, RoutedEventArgs e)
+        {
+            Microsoft.Office.Core.FileDialog pptFile = new Microsoft.Office.Interop.PowerPoint.Application().FileDialog[Microsoft.Office.Core.MsoFileDialogType.msoFileDialogFolderPicker];
+            pptFile.Show();
+
+            
+            if (pptFile.SelectedItems.Count == 0)
+                return;
+
+            OutputPptPath = pptFile.SelectedItems.Item(1);
         }
 
         private void finalProcess(object sender, EventArgs e)
@@ -173,13 +190,11 @@ namespace PptLyricMaker
                 MessageBox.Show("출력할 파일 이름이 입력되지 않았습니다.", "파일명", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
-
-            System.Windows.Forms.FolderBrowserDialog pptFile = new System.Windows.Forms.FolderBrowserDialog();
-
-            if (pptFile.ShowDialog() == System.Windows.Forms.DialogResult.Cancel)
+            if (OutputPptPath.Length == 0)
+            {
+                MessageBox.Show("출력할 파일의 저장위치가 입력되지 않았습니다.", "파일 저장위치", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
-
-            OutputPptPath = pptFile.SelectedPath;
+            }
 
             powerpoint.SavePptFile(pptFormPath, OutputPptPath + "\\" + OutputPath, ((Module.SingleLyric)LyricComboBox.SelectedItem).content, Convert.ToInt32(linePerSlide));
         }
