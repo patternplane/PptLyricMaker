@@ -17,6 +17,7 @@ namespace PptLyricMaker.Module
     {
         private BindingList<SingleLyric> lyricArray;
         public BindingList<SingleLyric> lyricList { get { return lyricArray; } }
+        private List<searchPair> searchResult = null;
 
         public Lyric()
         {
@@ -42,6 +43,59 @@ namespace PptLyricMaker.Module
         {
             if ((index >= 0) && (index < lyricArray.Count))
                 lyricArray.Remove(lyricArray[index]);
+        }
+
+        public searchPair[] search(String pattern)
+        {
+            if (searchResult == null)
+                searchResult = new List<searchPair>(50);
+            else
+                searchResult.Clear();
+
+            int[] findPos;
+            String content;
+            for (int i = 0; i < lyricArray.Count; i++) 
+            {
+                if (StringKMP.FindPattern(lyricArray[i].title, pattern,delegate (char a, char b) { return a == b; }).Length > 0 )
+                    searchResult.Add(new searchPair() {display = lyricArray[i].title, index = i});
+
+                content = lyricArray[i].content.Replace("\r\n", "");
+                findPos = StringKMP.FindPattern(content, pattern, delegate (char a, char b) { return a == b; });
+                if (findPos.Length > 0)
+                    foreach (String s in makeResultPreview(findPos, content, pattern.Length))
+                        searchResult.Add(new searchPair() { display = s, index = i });
+            }
+
+            return searchResult.ToArray();
+        }
+
+        private String[] makeResultPreview(int[] startPos, String content, int patternLength)
+        {
+            int INTERVAL = 6;
+
+            List<String> result = new List<string>(10);
+            int startIndex = ((startPos[0] - INTERVAL > 0)? startPos[0] - INTERVAL : 0);
+            int endPos;
+            for (int i = 0; i < startPos.Length; i++)
+            {
+                endPos = startPos[i] + patternLength;
+                if (i + 1 == startPos.Length)
+                {
+                    endPos += INTERVAL;
+                    if (endPos > content.Length)
+                        endPos = content.Length;
+                    result.Add(content.Substring(startIndex, endPos - startIndex));
+                }
+                else if (endPos + INTERVAL < startPos[i + 1] - INTERVAL)
+                {
+                    endPos += INTERVAL;
+                    result.Add(content.Substring(startIndex, endPos - startIndex));
+
+                    startIndex = startPos[i + 1] - INTERVAL;
+                }
+            }
+
+            return result.ToArray();
         }
 
         public void SaveAll()
@@ -73,6 +127,14 @@ namespace PptLyricMaker.Module
 
             return lyrics;
         }
+    }
+
+    /// <summary>
+    /// 검색 결과의 한 단위를 나타냅니다.
+    /// </summary>
+    public class searchPair { 
+        public String display; 
+        public int index; 
     }
 
     /// <summary>
