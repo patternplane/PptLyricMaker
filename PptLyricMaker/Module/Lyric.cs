@@ -17,7 +17,7 @@ namespace PptLyricMaker.Module
     {
         private BindingList<SingleLyric> lyricArray;
         public BindingList<SingleLyric> lyricList { get { return lyricArray; } }
-        private List<searchPair> searchResult = null;
+        private BindingList<searchPair> searchResult = null;
 
         public Lyric()
         {
@@ -45,10 +45,19 @@ namespace PptLyricMaker.Module
                 lyricArray.Remove(lyricArray[index]);
         }
 
-        public searchPair[] search(String pattern)
+        /// <summary>
+        /// 전체 곡에서 주어진 패턴으로 제목 또는 가사를 검색합니다.
+        /// </summary>
+        /// <param name="pattern">
+        /// 찾을 패턴
+        /// </param>
+        /// <returns>
+        /// 찾은 패턴값과 곡의 인덱스 정보가 담긴 searchPair 리스트
+        /// </returns>
+        public BindingList<searchPair> search(String pattern)
         {
             if (searchResult == null)
-                searchResult = new List<searchPair>(50);
+                searchResult = new BindingList<searchPair>();
             else
                 searchResult.Clear();
 
@@ -62,20 +71,40 @@ namespace PptLyricMaker.Module
                 content = lyricArray[i].content.Replace("\r\n", "");
                 findPos = StringKMP.FindPattern(content, pattern, delegate (char a, char b) { return a == b; });
                 if (findPos.Length > 0)
-                    foreach (String s in makeResultPreview(findPos, content, pattern.Length))
+                    foreach (String s in makeResultPreview(findPos, content, pattern.Length,lyricArray[i].title))
                         searchResult.Add(new searchPair() { display = s, index = i });
             }
 
-            return searchResult.ToArray();
+            return searchResult;
         }
 
-        private String[] makeResultPreview(int[] startPos, String content, int patternLength)
+        /// <summary>
+        /// 한 문자열에서 찾은 패턴들을 주변 문맥을 덧붙여 가공하여 문자열로 출력합니다.<br/>
+        /// 여러 패턴이 가까이 붙어있다면 한 문자열로 이어서 출력합니다.
+        /// </summary>
+        /// <param name="startPos">
+        /// KMP 검색결과, 문자열 상에서 발견된 패턴들의 시작위치입니다.
+        /// </param>
+        /// <param name="content">
+        /// 원본 문자열입니다.
+        /// </param>
+        /// <param name="patternLength">
+        /// 검색한 패턴의 길이입니다.
+        /// </param>
+        /// <param name="title">
+        /// 곡의 제목입니다.
+        /// </param>
+        /// <returns>
+        /// 가공된 패턴들을 담은 String 배열
+        /// </returns>
+        private String[] makeResultPreview(int[] startPos, String content, int patternLength, String title)
         {
             int INTERVAL = 6;
 
             List<String> result = new List<string>(10);
             int startIndex = ((startPos[0] - INTERVAL > 0)? startPos[0] - INTERVAL : 0);
             int endPos;
+            StringBuilder displayString = new StringBuilder(200);
             for (int i = 0; i < startPos.Length; i++)
             {
                 endPos = startPos[i] + patternLength;
@@ -84,12 +113,26 @@ namespace PptLyricMaker.Module
                     endPos += INTERVAL;
                     if (endPos > content.Length)
                         endPos = content.Length;
-                    result.Add(content.Substring(startIndex, endPos - startIndex));
+                    displayString.Clear();
+                    displayString.Append("(");
+                    displayString.Append(title);
+                    displayString.Append(") ");
+                    displayString.Append("...");
+                    displayString.Append(content.Substring(startIndex, endPos - startIndex));
+                    displayString.Append("...");
+                    result.Add(displayString.ToString());
                 }
                 else if (endPos + INTERVAL < startPos[i + 1] - INTERVAL)
                 {
                     endPos += INTERVAL;
-                    result.Add(content.Substring(startIndex, endPos - startIndex));
+                    displayString.Clear();
+                    displayString.Append("(");
+                    displayString.Append(title);
+                    displayString.Append(") ");
+                    displayString.Append("...");
+                    displayString.Append(content.Substring(startIndex, endPos - startIndex));
+                    displayString.Append("...");
+                    result.Add(displayString.ToString());
 
                     startIndex = startPos[i + 1] - INTERVAL;
                 }
@@ -133,8 +176,8 @@ namespace PptLyricMaker.Module
     /// 검색 결과의 한 단위를 나타냅니다.
     /// </summary>
     public class searchPair { 
-        public String display; 
-        public int index; 
+        public String display { get; set; } 
+        public int index { get; set; }
     }
 
     /// <summary>

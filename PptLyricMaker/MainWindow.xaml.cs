@@ -24,7 +24,6 @@ namespace PptLyricMaker
     {
         private Module.Lyric ly;
         public Module.Option ProgramOption;
-        private Option Window_Option;
         private Module.PowerPointApp powerpoint;
 
         private bool showModifyButton_in;
@@ -48,6 +47,8 @@ namespace PptLyricMaker
         private Microsoft.Office.Core.FileDialog pptOutPath;
         // ppt 틀 파일 찾기 윈도우
         System.Windows.Forms.OpenFileDialog pptFile;
+
+        string lastSearchPattern = null;
 
         public MainWindow()
         {
@@ -129,9 +130,47 @@ namespace PptLyricMaker
             // 옵션 버튼
             OptionButton.Click += OptionButtonClick;
 
+            // 검색 시작 이벤트
+            SearchButton.Click += searchStartEvent;
+            // 검색값 선택 이벤트
+            SearchComboBox.SelectionChanged += searchSelectEvent;
+            // 검색 콤보박스 데이터 연결
+            SearchComboBox.DisplayMemberPath = "display";
+
+
 
             // 마지막 처리함수 등록
             this.Closed += finalProcess;
+        }
+
+        private void searchSelectEvent(object sender, SelectionChangedEventArgs e)
+        {
+            if (SearchComboBox.SelectedIndex != -1)
+                LyricComboBox.SelectedIndex = ((Module.searchPair)SearchComboBox.SelectedItem).index;
+        }
+
+        private void searchStartEvent(object sender, RoutedEventArgs e)
+        {
+            searchStart(false);
+        }
+
+        private void searchStart(bool useLastRequest)
+        {
+            if (useLastRequest)
+            {
+                if (lastSearchPattern != null)
+                {
+                    SearchComboBox.ItemsSource = ly.search(lastSearchPattern);
+                }
+            }
+            else
+            {
+                if (SearchComboBox.Text.Length > 0)
+                {
+                    SearchComboBox.ItemsSource = ly.search(SearchComboBox.Text);
+                    lastSearchPattern = SearchComboBox.Text;
+                }
+            }
         }
 
         private void OptionButtonClick(object sender, RoutedEventArgs e)
@@ -235,6 +274,8 @@ namespace PptLyricMaker
             {
                 ly.deleteLyric(LyricComboBox.SelectedIndex);
                 HideDeleteButton();
+
+                searchStart(true);
             }
         }
 
@@ -253,6 +294,8 @@ namespace PptLyricMaker
             LyricComboBox.SelectedValue = "";
             LyricComboBox.SelectedIndex = i;
             HideModifyButton();
+
+            searchStart(true);
         }
 
         private void NotSavedWarning(object sender, EventArgs e)
@@ -314,6 +357,7 @@ namespace PptLyricMaker
                     try
                     {
                         ly.addLyric(LyricAddTitle.Text, LyricAddContent.Text);
+                        searchStart(true);
                     }
                     catch (Exception exc)
                     {
