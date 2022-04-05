@@ -51,7 +51,7 @@
                             <ColumnDefinition Width="70*"/>
                         </Grid.ColumnDefinitions>
 
-                        <ComboBox Grid.Column="0" x:Name="SearchComboBox" IsEditable="true" Text="(가사 또는 제목으로 검색)">
+                        <ComboBox Grid.Column="0" x:Name="SearchComboBox" IsEditable="true">
                         </ComboBox>
                         <Button Grid.Column="2" Content="검색하기" x:Name="SearchButton"/>
                     </Grid>

@@ -49,6 +49,7 @@ namespace PptLyricMaker
         System.Windows.Forms.OpenFileDialog pptFile;
 
         string lastSearchPattern = null;
+        const string DEFAUL_SEARCH_TEXT = "(가사 또는 제목으로 검색)";
 
         public MainWindow()
         {
@@ -130,6 +131,8 @@ namespace PptLyricMaker
             // 옵션 버튼
             OptionButton.Click += OptionButtonClick;
 
+            // 검색창 기본글귀
+            SearchComboBox.Text = DEFAUL_SEARCH_TEXT;
             // 검색 시작 이벤트
             SearchButton.Click += searchStartEvent;
             // 검색값 선택 이벤트
@@ -165,10 +168,14 @@ namespace PptLyricMaker
             }
             else
             {
-                if (SearchComboBox.Text.Length > 0)
+                if (SearchComboBox.Text.Length > 0 && SearchComboBox.Text.CompareTo(DEFAUL_SEARCH_TEXT) != 0)
                 {
                     SearchComboBox.ItemsSource = ly.search(SearchComboBox.Text);
                     lastSearchPattern = SearchComboBox.Text;
+                }
+                else
+                {
+                    MessageBox.Show("검색할 내용을 입력하세요!","검색값",MessageBoxButton.OK,MessageBoxImage.Error);
                 }
             }
         }
