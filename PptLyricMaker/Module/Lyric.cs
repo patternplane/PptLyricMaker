@@ -65,14 +65,17 @@ namespace PptLyricMaker.Module
             String content;
             for (int i = 0; i < lyricArray.Count; i++) 
             {
-                if (StringKMP.FindPattern(lyricArray[i].title, pattern,delegate (char a, char b) { return a == b; }).Length > 0 )
+                if (StringKMP.FindPattern(lyricArray[i].title.Replace(" ","").Replace("\r\n",""), pattern.Replace(" ", "").Replace("\r\n", ""), delegate (char a, char b) { return a == b; }).Length > 0 )
                     searchResult.Add(new searchPair() {display = lyricArray[i].title, index = i});
 
                 content = lyricArray[i].content.Replace("\r\n", "");
-                findPos = StringKMP.FindPattern(content, pattern, delegate (char a, char b) { return a == b; });
+                findPos = StringKMP.FindPattern(content.Replace(" ", "").Replace("\r\n", ""), pattern.Replace(" ", "").Replace("\r\n", ""), delegate (char a, char b) { return a == b; });
                 if (findPos.Length > 0)
-                    foreach (String s in makeResultPreview(findPos, content, pattern.Length,lyricArray[i].title))
+                {
+                    findPos = getRealIndex(content,findPos);
+                    foreach (String s in makeResultPreview(findPos, content, pattern.Length, lyricArray[i].title))
                         searchResult.Add(new searchPair() { display = s, index = i });
+                }
             }
 
             return searchResult;
@@ -138,6 +141,31 @@ namespace PptLyricMaker.Module
                 }
             }
 
+            return result.ToArray();
+        }
+
+        /// <summary>
+        /// 공백을 제외하고 검색된 KMP 검색 결과의 인덱스를 실제 문자열에서의 검색위치로 변경해줍니다.
+        /// </summary>
+        /// <param name="originalStr">원본 문자열</param>
+        /// <param name="findPos">공백을 제외하여 검색한 KMP 검색결과</param>
+        /// <returns>실제 원본 문자열에서 검색된 위치들</returns>
+        private int[] getRealIndex(String originalStr, int[] findPos)
+        {
+            List<int> result = new List<int>(20);
+            int posIndex = 0;
+            int realIndex = 0;
+            int nonBlankIndex = 0;
+            while (posIndex < findPos.Length)
+            {
+                while (nonBlankIndex != findPos[posIndex]) 
+                {
+                    while (char.IsWhiteSpace(originalStr[++realIndex]));
+                    nonBlankIndex++;
+                }
+                result.Add(realIndex);
+                posIndex++;
+            }
             return result.ToArray();
         }
 
