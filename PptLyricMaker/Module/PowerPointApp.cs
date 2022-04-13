@@ -77,7 +77,7 @@ namespace PptLyricMaker.Module
                     // 모든 text가능 shape마다 작업
                     foreach (mspp.Shape s in CurrentSlide.Shapes)
                         if (s.HasTextFrame != Microsoft.Office.Core.MsoTriState.msoFalse)
-                            s.TextFrame.TextRange.Text = s.TextFrame.TextRange.Text.Replace("/가사", lyric.ToString());
+                            s.TextFrame.TextRange.Text = s.TextFrame.TextRange.Text.Replace("/가사", lyric.ToString().Trim());
 
                     lyric.Clear();
 
