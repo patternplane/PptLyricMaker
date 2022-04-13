@@ -63,6 +63,7 @@
     <Compile Include="Module\Lyric.cs" />
     <Compile Include="Module\Option.cs" />
     <Compile Include="Module\PowerPointApp.cs" />
+    <Compile Include="Module\StringCorrector.cs" />
     <Compile Include="Module\StringKMP.cs" />
     <Compile Include="Option.xaml.cs">
       <DependentUpon>Option.xaml</DependentUpon>

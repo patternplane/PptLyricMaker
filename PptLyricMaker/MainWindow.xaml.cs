@@ -92,8 +92,8 @@ namespace PptLyricMaker
             LyricAddButton.Click += Event_LyricAdd;
 
             // 제목/곡 변경시 "수정값 적용버튼" 보이기 설정
-            LyricTitleModifyTextBox.TextChanged += Event_ShowModifyButton;
-            LyricContentTextBox.TextChanged += Event_ShowModifyButton;
+            LyricTitleModifyTextBox.TextChanged += Event_LyricTitleTextBox_TextChanged;
+            LyricContentTextBox.TextChanged += Event_LyricContentTextBox_TextChanged;
             // 단, 다른 곡을 선택한 경우엔 취소
             LyricComboBox.SelectionChanged += Event_SelectChanged;
 
@@ -295,7 +295,7 @@ namespace PptLyricMaker
         {
             Module.SingleLyric lyric = (Module.SingleLyric)LyricComboBox.SelectedItem;
             lyric.title = LyricTitleModifyTextBox.Text;
-            lyric.content = LyricContentTextBox.Text;
+            lyric.content = Module.StringCorrector.makeCorrectNewline(LyricContentTextBox.Text);
             LyricComboBox.Items.Refresh();
             int i = LyricComboBox.SelectedIndex;
             LyricComboBox.SelectedValue = "";
@@ -317,7 +317,13 @@ namespace PptLyricMaker
             }
         }
 
-        private void Event_ShowModifyButton(object sender, TextChangedEventArgs e)
+        private void Event_LyricTitleTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (LyricComboBox.SelectedIndex != -1)
+                ShowModifyButton();
+        }
+
+        private void Event_LyricContentTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             if (LyricComboBox.SelectedIndex != -1)
                 ShowModifyButton();
@@ -363,7 +369,7 @@ namespace PptLyricMaker
                     // 유효한 제목이 입력된 경우
                     try
                     {
-                        ly.addLyric(LyricAddTitle.Text, LyricAddContent.Text);
+                        ly.addLyric(LyricAddTitle.Text, Module.StringCorrector.makeCorrectNewline(LyricAddContent.Text));
                         searchStart(true);
                     }
                     catch (Exception exc)
