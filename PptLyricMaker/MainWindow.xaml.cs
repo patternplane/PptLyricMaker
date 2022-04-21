@@ -168,7 +168,7 @@ namespace PptLyricMaker
             }
             else
             {
-                if (SearchComboBox.Text.Length > 0 && SearchComboBox.Text.CompareTo(DEFAUL_SEARCH_TEXT) != 0)
+                if (SearchComboBox.Text.Trim().Length > 0 && SearchComboBox.Text.CompareTo(DEFAUL_SEARCH_TEXT) != 0)
                 {
                     SearchComboBox.ItemsSource = ly.search(SearchComboBox.Text);
                     lastSearchPattern = SearchComboBox.Text;
