@@ -57,15 +57,14 @@ namespace PptLyricMaker.Module
 
         private void makeSlides(mspp.Presentation form, mspp.Presentation ppt, String content, int lineNumber)
         {
-            String[] lines = content.Split(new[] { (char)0xd, (char)0xa },StringSplitOptions.RemoveEmptyEntries);
+            String[] lines = content.Split(new[] { "\r\n" },StringSplitOptions.None);
             int lastSlide = 1;
             mspp.Slide CurrentSlide;
             StringBuilder lyric = new StringBuilder("");
-            int currentLine = 0;
-            foreach (String line in lines)
+            lyric.Append(lines[0]);
+            int currentLine = 1;
+            for (int i = 1; i < lines.Length; i++)
             {
-                lyric.Append(line);
-                currentLine++;
                 // 라인 수가 모였다면
                 if (currentLine == lineNumber)
                 {
@@ -77,7 +76,7 @@ namespace PptLyricMaker.Module
                     // 모든 text가능 shape마다 작업
                     foreach (mspp.Shape s in CurrentSlide.Shapes)
                         if (s.HasTextFrame != Microsoft.Office.Core.MsoTriState.msoFalse)
-                            s.TextFrame.TextRange.Text = s.TextFrame.TextRange.Text.Replace("/가사", lyric.ToString().Trim());
+                            s.TextFrame.TextRange.Text = s.TextFrame.TextRange.Text.Replace("/가사", lyric.ToString());
 
                     lyric.Clear();
 
@@ -85,6 +84,8 @@ namespace PptLyricMaker.Module
                 }
                 else
                     lyric.Append("\r\n");
+                lyric.Append(lines[i]);
+                currentLine++;
             }
             if (lyric.Length != 0)
             {
@@ -96,7 +97,7 @@ namespace PptLyricMaker.Module
                 // 모든 text가능 shape마다 작업
                 foreach (mspp.Shape s in CurrentSlide.Shapes)
                     if (s.HasTextFrame != Microsoft.Office.Core.MsoTriState.msoFalse)
-                        s.TextFrame.TextRange.Text = s.TextFrame.TextRange.Text.Replace("/가사", lyric.ToString().Trim());
+                        s.TextFrame.TextRange.Text = s.TextFrame.TextRange.Text.Replace("/가사", lyric.ToString());
             }
         }
     }
