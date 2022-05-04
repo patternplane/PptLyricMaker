@@ -35,7 +35,7 @@ namespace PptLyricMaker
         public String pptFormPath { get { return pptFormPath_in; } set { pptFormPath_in = value; NotifyPropertyChanged("pptFormPath"); } }
 
         private String linePerSlide_in;
-        public String linePerSlide { get { return linePerSlide_in; } set { linePerSlide_in = value; NotifyPropertyChanged("linePerSlide"); } }
+        public String linePerSlide { get { return linePerSlide_in; } set { linePerSlide_in = Module.StringCorrector.makeOnlyNum(value); NotifyPropertyChanged("linePerSlide"); } }
 
         private String OutputFileName_in;
         public String OutputFileName { get { return OutputFileName_in; } set { OutputFileName_in = value; NotifyPropertyChanged("OutputPath"); } }
@@ -112,8 +112,6 @@ namespace PptLyricMaker
 
             // 슬라이드별 줄 수 텍스트 바인딩
             LinePerSlideTextBox.DataContext = this;
-            // 숫자만 입력받기
-            LinePerSlideTextBox.KeyDown += LinePerSlideTextBox_KeyDown;
 
             // ppt 출력파일의 이름 텍스트 바인딩
             pptOutputFileNameTextBox.DataContext = this;
@@ -201,19 +199,8 @@ namespace PptLyricMaker
             ProgramOption.saveOptionData();
         }
 
-        private void LinePerSlideTextBox_KeyDown(object sender, KeyEventArgs e)
-        {
-            if ((e.Key >= Key.D0 && e.Key <= Key.D9) || (e.Key >= Key.NumPad0 && e.Key <= Key.NumPad9) || e.Key == Key.Back || e.Key == Key.Delete)
-            {
-                e.Handled = false;
-            }
-            else
-                e.Handled = true;
-        }
-
         private void pptGenerateButtonClick(object sender, RoutedEventArgs e)
         {
-            linePerSlide = linePerSlide.Replace(" ", "");
             if (LyricComboBox.SelectedIndex == -1)
             {
                 MessageBox.Show("출력할 곡을 선택하지 않았습니다.", "곡이 선택되지 않음", MessageBoxButton.OK, MessageBoxImage.Warning);
@@ -235,7 +222,6 @@ namespace PptLyricMaker
 
         private void pptOutputButtonClick(object sender, RoutedEventArgs e)
         {
-            linePerSlide = linePerSlide.Replace(" ", "");
             if (LyricComboBox.SelectedIndex == -1)
             {
                 MessageBox.Show("출력할 곡을 선택하지 않았습니다.", "곡이 선택되지 않음", MessageBoxButton.OK, MessageBoxImage.Warning);

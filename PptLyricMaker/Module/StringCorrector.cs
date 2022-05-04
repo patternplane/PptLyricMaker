@@ -49,5 +49,19 @@ namespace PptLyricMaker.Module
             return str.ToString();
         }
 
+        /// <summary>
+        /// 주어진 문자열에서 숫자만 남도록 재단합니다.
+        /// </summary>
+        /// <param name="origin">원본 문자열</param>
+        /// <returns></returns>
+        static public string makeOnlyNum(string origin)
+        {
+            StringBuilder output = new StringBuilder(origin);
+            for (int i = 0; i < output.Length; i++)
+                if (!char.IsDigit(output[i]))
+                    output.Remove(i--, 1);
+
+            return output.ToString();
+        }
     }
 }
